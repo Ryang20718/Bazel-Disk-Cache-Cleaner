@@ -1,6 +1,6 @@
 on:
   push:
-    # To create a new release, git checkout -b vX.X.X and push
+    # To create a new release, git tag vX.X.X; git push origin --tags
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
@@ -41,7 +41,14 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: |
-            Release ${{ github.ref }}
+            load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+            ```
+            http_archive(
+                name = "bazel_disk_cache_cleaner",
+                strip_prefix = "${{ github.ref }}",
+                url = "https://github.com/Ryang20718/Bazel-Disk-Cache-Cleaner/archive/refs/tags/${{ github.ref }}.tar.gz",
+            )
+            ```
           draft: false
           prerelease: false
 
@@ -49,7 +56,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: "tmp/bazel_disk_cache_cleaner*"
+          file: "/tmp/bazel_disk_cache_cleaner*"
           release_id: ${{ steps.create_release.outputs.id }}
           overwrite: true
           verbose: true
