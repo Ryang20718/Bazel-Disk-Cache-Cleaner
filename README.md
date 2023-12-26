@@ -5,8 +5,12 @@ Bazel users on local executors. Bazel eats up disk space and this script is inte
 
 ## How to use
 
-Leverage the shell script wrapper `bazel_disk_cache_cleaner/bazel_disk_cache_cleaner.sh` to clean your bazel cache!
+- Leverage the shell script wrapper `bazel_disk_cache_cleaner/bazel_disk_cache_cleaner.sh` to clean your bazel cache!
 Replace `<path-to-bazel-cache-directory>` with the path to your Bazel cache directory and `<number-of-days>` with the number of days after which you want to delete files. 
+
+- Copy paste the `example_disk_cache_cleaner.sh` into your directory
+
+- Integrate the source code into your WORKSPACE (see releases for details)
 
 ## Flags
 
