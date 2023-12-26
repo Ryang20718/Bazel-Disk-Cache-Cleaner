@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Wrapper script for bazel. only linux and macos supported right now
+set -eu -o pipefail
+
+platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
+os=${OSTYPE//[0-9.]/}
+arch="$(uname -m)"
+
+if [[ ${arch} == "x86_64" ]]; then
+	arch="amd64"
+fi
+
+BAZEL_VERSION="6.4.0"
+BAZEL_INSTALL="https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-${os}-${arch}.sh"
+INSTALL_ROOT="${HOME}/.cache/bazel"
+
+mkdir -p "${INSTALL_ROOT}"
+if [[ ! -f "${INSTALL_ROOT}/${BAZEL_VERSION}/bin/bazel" ]]; then
+    wget -q ${BAZEL_INSTALL} -P "${INSTALL_ROOT}"
+    /bin/bash "${INSTALL_ROOT}/$(basename ${BAZEL_INSTALL})" --prefix="${INSTALL_ROOT}"/${BAZEL_VERSION}
+fi
+
+BAZEL_PATH="${INSTALL_ROOT}/${BAZEL_VERSION}/lib/bazel/bin/bazel-real"
+
+exec ${BAZEL_PATH} "$@"

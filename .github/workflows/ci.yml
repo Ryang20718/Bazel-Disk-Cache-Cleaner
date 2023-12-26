@@ -1,0 +1,30 @@
+name: Bazel Build and Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Bazel Build and Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Linters
+        shell: bash
+        run: tools/trunk check
+
+      - name: Build Linux X86 64 binary
+        shell: bash
+        run: tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //bazel_disk_cache_cleaner
+
+      - name: Build Darwin arm 64 binary
+        shell: bash
+        run: tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_arm64 //bazel_disk_cache_cleaner
+
+      - name: Build Darwin X86 64 binary
+        shell: bash
+        run: tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_amd64 //bazel_disk_cache_cleaner
