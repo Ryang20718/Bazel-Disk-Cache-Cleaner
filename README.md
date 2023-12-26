@@ -1,7 +1,7 @@
 # Bazel-Disk-Cache-Cleaner
 
 **What is this project for?**
-People who are using bazel on local executor, but bazel is constantly eating up disk space. T\_\_T
+Bazel users on local executors. Bazel eats up disk space and this script is intended to clean your disk space but only files that haven't been accesssed in a while via access time.
 
 ## How to use
 
