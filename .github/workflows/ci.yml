@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu-latest]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Run Linters
         shell: bash
@@ -19,12 +19,15 @@ jobs:
 
       - name: Build Linux X86 64 binary
         shell: bash
-        run: tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //bazel_disk_cache_cleaner
+        run: |
+          tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //bazel_disk_cache_cleaner
 
       - name: Build Darwin arm 64 binary
         shell: bash
-        run: tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_arm64 //bazel_disk_cache_cleaner
+        run: |
+          tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_arm64 //bazel_disk_cache_cleaner
 
       - name: Build Darwin X86 64 binary
         shell: bash
-        run: tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_amd64 //bazel_disk_cache_cleaner
+        run: |
+          tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_amd64 //bazel_disk_cache_cleaner

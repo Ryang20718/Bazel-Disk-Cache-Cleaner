@@ -4,11 +4,12 @@
 set -eu -o pipefail
 
 platform="$(uname -s | tr '[:upper:]' '[:lower:]')"
-os=${OSTYPE//[0-9.]/}
+os=${OSTYPE%%-*}
+os=${os//[0-9]/}
 arch="$(uname -m)"
 
-if [[ ${arch} == "x86_64" ]]; then
-	arch="amd64"
+if [[ ${arch} == "amd64" ]]; then
+	arch="x86_64"
 fi
 
 BAZEL_VERSION="6.4.0"

@@ -1,0 +1,54 @@
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create Release
+
+jobs:
+  build:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Linux X86 64 binary
+        shell: bash
+        run: |
+          tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:linux_amd64 //bazel_disk_cache_cleaner
+          mv bazel-bin/bazel_disk_cache_cleaner/bazel_disk_cache_cleaner_/bazel_disk_cache_cleaner /tmp/bazel_disk_cache_cleaner_linux_amd64
+
+      - name: Build Darwin arm 64 binary
+        shell: bash
+        run: |
+          tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_arm64 //bazel_disk_cache_cleaner
+          mv bazel-bin/bazel_disk_cache_cleaner/bazel_disk_cache_cleaner_/bazel_disk_cache_cleaner /tmp/bazel_disk_cache_cleaner_darwin_arm64
+
+      - name: Build Darwin X86 64 binary
+        shell: bash
+        run: |
+          tools/bazel build --platforms=@io_bazel_rules_go//go/toolchain:darwin_amd64 //bazel_disk_cache_cleaner
+          mv bazel-bin/bazel_disk_cache_cleaner/bazel_disk_cache_cleaner_/bazel_disk_cache_cleaner /tmp/bazel_disk_cache_cleaner_darwin_amd64
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - uses: xresloader/upload-to-github-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          file: "tmp/bazel_disk_cache_cleaner*"
+          release_id: ${{ steps.create_release.outputs.id }}
+          overwrite: true
+          verbose: true
