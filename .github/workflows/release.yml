@@ -1,6 +1,6 @@
 on:
   push:
-    # Sequence of patterns matched against refs/tags
+    # To create a new release, git checkout -b vX.X.X and push
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
@@ -44,6 +44,7 @@ jobs:
             Release ${{ github.ref }}
           draft: false
           prerelease: false
+
       - uses: xresloader/upload-to-github-release@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
