@@ -61,7 +61,7 @@ func main() {
 					}
 				}
 				timeKeepFilesAccessedDays := time.Duration(KeepFilesAccessedDays) * 24 * time.Hour
-				if accessTime.Add(timeKeepFilesAccessedDays).Before(time.Now()) && path != BazelCacheDir {
+				if accessTime.Add(timeKeepFilesAccessedDays).Before(time.Now()) && path != BazelCacheDir && !info.IsDir() {
 					// Check if Access time is greater than desired days to keep
 					// don't delete cache dir, otherwise you'll have to purge bazel cache completely
 					fileList = append(fileList, path)
