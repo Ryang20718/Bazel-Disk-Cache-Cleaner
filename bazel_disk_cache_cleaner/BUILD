@@ -5,7 +5,10 @@ go_library(
     srcs = ["bazel_disk_cache_cleaner.go"],
     importpath = "github.com/Ryang20718/bazel-disk-cache-cleaner/bazel_disk_cache_cleaner",
     visibility = ["//visibility:private"],
-    deps = ["@com_github_spf13_cobra//:go_default_library"],
+    deps = [
+        "@com_github_spf13_cobra//:cobra",
+        "@org_uber_go_zap//:go_default_library",
+    ],
 )
 
 go_binary(
