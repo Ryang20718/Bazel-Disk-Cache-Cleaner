@@ -16,23 +16,23 @@ runtimes:
     - python@3.10.8
     - go@1.21.1
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
-lint:
-  definitions:
-    - name: gen_golang_build
-      files: [go]
-      commands:
-        - output: regex
-          parse_regex: (ERROR(?P<path>.*):(?P<line>-?\d+):(?P<message>.*))
-          target: .
-          success_codes: [0, 1]
-          run: ${workspace}/tools/bazel run //:gazelle-update-repos && ${workspace}/tools/bazel run //:gazelle
-          batch: false
-          disable_upstream: true
-          read_output_from: stderr
+# lint:
+#   definitions:
+#     - name: gen_golang_build
+#       files: [go]
+#       commands:
+#         - output: regex
+#           parse_regex: (ERROR(?P<path>.*):(?P<line>-?\d+):(?P<message>.*))
+#           target: .
+#           success_codes: [0, 1]
+#           run: ${workspace}/tools/bazel run //:gazelle-update-repos && ${workspace}/tools/bazel run //:gazelle
+#           batch: false
+#           disable_upstream: true
+#           read_output_from: stderr
   enabled:
     - git-diff-check
     - markdownlint@0.38.0
     - prettier@3.1.1
     - trufflehog@3.63.7
-    - gen_golang_build@SYSTEM
+    # - gen_golang_build@SYSTEM
     - golangci-lint@1.53.3

@@ -33,4 +33,4 @@ This CLI iterates through the entire `BAZEL_CACHE_DIR` env variable set and dele
 `tools/trunk fmt`
 
 **To do all your GO development & bazel development**
-`tools/trunk check` has got you covered with vendoring third party dependencies and generating BUILD files. See `.trunk.yaml` for custom definitions. Also, linters are run here as well :)
+`go mod tidy; tools/bazel run //:gazelle-update-repos && tools/bazel run //:gazelle`
